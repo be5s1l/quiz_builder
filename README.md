@@ -2,7 +2,7 @@
 
 A lightweight single-page quiz builder app.
 
-Repository: https://github.com/be5s1l/quiz_builder.git
+Repository: https://be5s1l.github.io/quiz_builder/
 
 ## Features
 - Add/edit quiz questions manually
