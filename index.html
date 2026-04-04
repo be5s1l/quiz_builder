@@ -1,114 +1,665 @@
-﻿<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>MCQ Quiz App</title>
-    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+<!DOCTYPE html>
+<html class="light bg-[#f9f5ff]" lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Insight Flow - Quiz Builder</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;family=Manrope:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
     <link rel="stylesheet" href="styles.css" />
-  </head>
-  <body>
-    <h1>Quiz Builder</h1>
-    <p class="subtitle">Build· Import· Play· Review</p>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "primary": "#4a40e0",
+                        "secondary-container": "#a4d8ff",
+                        "tertiary": "#933880",
+                        "primary-fixed": "#9795ff",
+                        "on-primary-container": "#14007e",
+                        "tertiary-fixed-dim": "#f088d4",
+                        "surface": "#f9f5ff",
+                        "surface-variant": "#ddd9ff",
+                        "primary-dim": "#3d30d4",
+                        "surface-container": "#e9e5ff",
+                        "on-tertiary-fixed": "#430039",
+                        "on-secondary-fixed-variant": "#00567c",
+                        "secondary-fixed-dim": "#81ccff",
+                        "on-primary": "#f4f1ff",
+                        "on-background": "#2c2a51",
+                        "on-secondary": "#e9f4ff",
+                        "on-tertiary": "#ffeef6",
+                        "surface-tint": "#4a40e0",
+                        "on-surface-variant": "#5a5781",
+                        "inverse-surface": "#0b082f",
+                        "outline": "#75729e",
+                        "on-secondary-container": "#004c6f",
+                        "on-secondary-fixed": "#003853",
+                        "secondary-dim": "#00557b",
+                        "on-surface": "#2c2a51",
+                        "surface-container-low": "#f3eeff",
+                        "surface-container-highest": "#ddd9ff",
+                        "on-tertiary-fixed-variant": "#701961",
+                        "on-error-container": "#510017",
+                        "surface-container-lowest": "#ffffff",
+                        "error-container": "#f74b6d",
+                        "primary-container": "#9795ff",
+                        "surface-dim": "#d4cfff",
+                        "secondary": "#00628c",
+                        "error-dim": "#a70138",
+                        "on-primary-fixed": "#000000",
+                        "secondary-fixed": "#a4d8ff",
+                        "tertiary-dim": "#842b73",
+                        "tertiary-container": "#ff95e3",
+                        "tertiary-fixed": "#ff95e3",
+                        "on-error": "#ffefef",
+                        "on-tertiary-container": "#650d58",
+                        "surface-bright": "#f9f5ff",
+                        "inverse-on-surface": "#9c98c6",
+                        "background": "#f9f5ff",
+                        "on-primary-fixed-variant": "#1a0099",
+                        "surface-container-high": "#e3dfff",
+                        "primary-fixed-dim": "#8885ff",
+                        "error": "#b41340",
+                        "outline-variant": "#aca8d7",
+                        "inverse-primary": "#8582ff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "fontFamily": {
+                        "headline": ["Plus Jakarta Sans"],
+                        "body": ["Manrope"],
+                        "label": ["Manrope"]
+                    }
+                },
+            },
+        }
+    </script>
+</head>
+<body class="bg-background text-on-background font-body min-h-screen overflow-hidden flex flex-col">    <style>
+        .screen { display: none; width: 100%; height: 100vh; overflow: hidden; }
+        .screen.active { display: flex; }
+    </style>
 
-    <!--══SETUP══-->
-    <div class="screen active" id="setupScreen">
-      <div class="card">
-        <div class="card-title">⬆Import from File</div>
-        <div class="import-zone" id="importZone">
-          <input type="file" accept=".txt" id="fileInput" onchange="handleFileImport(event)" />
-          <div class="import-icon">📄</div>
-          <div class="import-title">Drop a .txt file or click to browse</div>
-          <div class="import-sub">Questions are added on top of existing ones</div>
-        </div>
-        <div class="import-status" id="importStatus"></div>
-        <div style="margin-top:1.2rem; display:flex; gap:0.7rem; flex-wrap:wrap;">
-          <button class="btn btn-ghost" onclick="showFormatHelp()" style="font-size:0.82rem;padding:0.5rem 1rem;">📋Format guide</button>
-          <button class="btn btn-green" onclick="downloadTemplate()" style="font-size:0.82rem;padding:0.5rem 1rem;">⬇Download template</button>
-        </div>
-      </div>
+    <div id="dashboard-screen" class="screen active flex-row w-full">
+        
+<!-- SideNavBar -->
+<aside class="hidden md:flex flex-col h-screen w-64 rounded-r-3xl bg-[#f3eeff] dark:bg-[#211d2e] py-6 px-4 shrink-0">
+<div class="flex items-center gap-3 px-4 mb-10">
+<div class="w-10 h-10 rounded-xl primary-gradient flex items-center justify-center text-on-primary">
+<span class="material-symbols-outlined" data-icon="insights">insights</span>
+</div>
+<div>
+<h2 class="text-lg font-black text-[#2c2a51]">Creator Studio</h2>
+<p class="text-xs text-on-surface-variant font-medium">Insight Flow System</p>
+</div>
+</div>
+<nav class="flex-1 flex flex-col gap-2">
+<a class="flex items-center gap-3 py-3 px-4 text-[#4a40e0] dark:text-[#9795ff] font-bold hover:bg-[#e3dfff] dark:hover:bg-[#2d283e] rounded-xl transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="quiz" style="font-variation-settings: 'FILL' 1;">quiz</span>
+<span class="font-medium">My Quizzes</span>
+</a>
+<a class="flex items-center gap-3 py-3 px-4 text-[#5a5781] dark:text-[#aca8d7] hover:bg-[#e3dfff] dark:hover:bg-[#2d283e] rounded-xl transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span class="font-medium">Settings</span>
+</a>
+<a class="flex items-center gap-3 py-3 px-4 text-[#5a5781] dark:text-[#aca8d7] hover:bg-[#e3dfff] dark:hover:bg-[#2d283e] rounded-xl transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="help">help</span>
+<span class="font-medium">Help</span>
+</a>
+</nav>
+<div class="mt-auto px-2">
+<button onclick="startQuizEditor()" class="w-full primary-gradient text-on-primary font-bold py-4 rounded-xl flex items-center justify-center gap-2 active:scale-95 transition-all shadow-lg shadow-primary/20">
+<span class="material-symbols-outlined" data-icon="add">add</span>
+<span>Create New Quiz</span>
+</button>
+</div>
+</aside>
+<div class="flex-1 flex flex-col min-w-0 overflow-hidden">
+<!-- TopNavBar -->
+<header class="w-full h-16 bg-[#f9f5ff] dark:bg-[#1a1625] flex justify-between items-center px-8 max-w-full mx-auto">
+<div class="flex items-center gap-8">
+<span class="text-xl font-bold text-[#2c2a51] dark:text-[#f3eeff]">Insight Flow</span>
+<nav class="hidden md:flex gap-6 items-center">
+<a class="text-[#4a40e0] font-bold border-b-2 border-[#4a40e0] pb-1 hover:text-[#3d30d4] transition-colors duration-200" href="#">Dashboard</a>
+<a class="text-[#5a5781] dark:text-[#aca8d7] hover:text-[#3d30d4] transition-colors duration-200" href="#">Analytics</a>
+</nav>
+</div>
+<div class="flex items-center gap-6">
+<div class="relative hidden sm:block">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-sm" data-icon="search">search</span>
+<input class="bg-surface-container-low border-none rounded-full pl-10 pr-4 py-2 text-sm focus:ring-2 focus:ring-primary w-64" placeholder="Search quizzes..." type="text"/>
+</div>
+<div class="flex items-center gap-4">
+<button class="p-2 text-on-surface-variant hover:bg-surface-container-high rounded-full transition-all">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+</button>
+<div class="w-8 h-8 rounded-full bg-surface-container-highest overflow-hidden">
+<img alt="User profile avatar" data-alt="professional headshot of a young creative professional woman with a friendly smile and soft studio lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCizogcbL-d2a9nO77w2FLnt2b_RRqoi5uRWPRv4tW4I067vjYaFkuQgwGcgQLjXG59CFzw4hhacJyiNrmRMVU3zNRSHcOz6oVIDTuHtGzZXsrOqWMja-w2aRXN9OuNTzrgLcteFWRU0maHYPSo-n-mSjNPm_3vQTNE9QirxpZDlie2zyfa0qk2rQcrdoTUcp3Mc0HAdwzffBfJcjRD9q-3TMcwRrQwaunZi_caQHcX9bbqdbKfR9gTh9oT8lD5xs8foZtIerlHL7A"/>
+</div>
+</div>
+</div>
+</header>
+<!-- Main Content Area -->
+<main class="flex-1 overflow-y-auto p-8 lg:p-12">
+<!-- Hero Greeting -->
+<section class="mb-12">
+<div class="max-w-4xl">
+<h1 class="text-5xl font-extrabold text-on-background tracking-tight mb-4">Welcome back, Sarah!</h1>
+<p class="text-xl text-on-surface-variant max-w-2xl">Your insights are growing. You have <span class="text-primary font-bold">12 active quizzes</span> generating data across 3 regions.</p>
+</div>
+</section>
+<!-- Quick Stats Bento Grid -->
+<section class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+<div class="bg-surface-container-lowest p-6 rounded-3xl flex flex-col justify-between">
+<div>
+<p class="text-sm font-bold text-on-surface-variant mb-1 uppercase tracking-wider">Total Responses</p>
+<h3 class="text-3xl font-bold text-on-surface">24,892</h3>
+</div>
+<div class="mt-4 flex items-center gap-2 text-primary font-bold text-sm">
+<span class="material-symbols-outlined text-sm" data-icon="trending_up">trending_up</span>
+<span>+12.5% this month</span>
+</div>
+</div>
+<div class="bg-surface-container-lowest p-6 rounded-3xl flex flex-col justify-between">
+<div>
+<p class="text-sm font-bold text-on-surface-variant mb-1 uppercase tracking-wider">Avg. Completion</p>
+<h3 class="text-3xl font-bold text-on-surface">84.2%</h3>
+</div>
+<div class="mt-4 w-full bg-surface-container-low h-2 rounded-full overflow-hidden">
+<div class="h-full primary-gradient w-[84%] rounded-full"></div>
+</div>
+</div>
+<div class="bg-primary-container p-6 rounded-3xl flex flex-col justify-between text-on-primary-container">
+<div>
+<p class="text-sm font-bold opacity-80 mb-1 uppercase tracking-wider">Pro Insights</p>
+<p class="text-lg font-medium leading-tight">Your "UX Design Basics" quiz is trending in San Francisco.</p>
+</div>
+<button class="mt-4 text-sm font-bold flex items-center gap-1 group">
+                        View Report <span class="material-symbols-outlined text-sm transition-transform group-hover:translate-x-1" data-icon="arrow_forward">arrow_forward</span>
+</button>
+</div>
+</section>
+<!-- Quiz Management Area -->
+<section>
+<div class="flex items-center justify-between mb-8">
+<h2 class="text-2xl font-bold text-on-surface">Recent Quizzes</h2>
+<div class="flex gap-4">
+<button class="flex items-center gap-2 py-2 px-4 rounded-xl bg-surface-container-high text-primary font-bold text-sm hover:bg-surface-variant transition-all">
+<span class="material-symbols-outlined text-sm" data-icon="filter_list">filter_list</span>
+                            Filter
+                        </button>
+<button class="flex md:hidden items-center gap-2 py-2 px-4 rounded-xl primary-gradient text-on-primary font-bold text-sm">
+<span class="material-symbols-outlined text-sm" data-icon="add">add</span>
+                            New
+                        </button>
+</div>
+</div>
+<div class="grid grid-cols-1 xl:grid-cols-2 gap-6" id="dashboard-quiz-list">
+<!-- Quiz Card 1: Published -->
+<div class="bg-surface-container-lowest rounded-3xl p-6 flex flex-col md:flex-row gap-6 hover:shadow-xl hover:shadow-primary/5 transition-all">
+<div class="w-full md:w-32 h-32 rounded-2xl overflow-hidden bg-surface-container-low shrink-0">
+<img alt="Quiz thumbnail" data-alt="vibrant abstract digital art representing data and technology with glowing lines and indigo color palette" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC1WR0iUUiuZFYVnj1s7HQc0OXfVW-hkteL5K0qk9sULVBzie0ly-9Mo6oZh8yvDlIQXKQP6w5niHuQhTDnRdMDP3Rm1BM668KBiEXPlHSkZGyY74awAB1v7iYT18V_2IkuqC7GUsNJFg4d2P805QqUO3n7TMEj0xuB3RmTM1PBogLIbJ7ZM0jugnR-Jvb8BbuvxAq-CSDqOIkdLXJojL-8XtM5rLXndmRC_XBsGOKa4YwsGpysTtQSQBowo35ukDVI5dlvcLPs410"/>
+</div>
+<div class="flex-1 flex flex-col justify-between py-1">
+<div>
+<div class="flex items-center justify-between mb-2">
+<span class="px-3 py-1 bg-secondary-container text-on-secondary-container rounded-full text-[10px] font-bold uppercase tracking-widest">Published</span>
+<span class="text-xs text-on-surface-variant">Created Oct 24, 2023</span>
+</div>
+<h4 class="text-xl font-bold text-on-surface mb-1">Advanced UX Research Patterns</h4>
+<p class="text-sm text-on-surface-variant">A deep dive into cognitive biases and behavioral mapping.</p>
+</div>
+<div class="mt-4 flex items-center justify-between">
+<div class="flex items-center gap-4 text-xs font-bold text-on-surface-variant">
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-sm" data-icon="group">group</span> 1.2k</span>
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-sm" data-icon="timer">timer</span> 15m</span>
+</div>
+<div class="flex gap-2">
+<button class="p-2 rounded-lg text-primary hover:bg-surface-container-low transition-all">
+<span class="material-symbols-outlined" data-icon="analytics">analytics</span>
+</button>
+<button class="p-2 rounded-lg text-on-surface-variant hover:bg-surface-container-low transition-all">
+<span class="material-symbols-outlined" data-icon="more_vert">more_vert</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Quiz Card 2: Draft -->
+<div class="bg-surface-container-lowest rounded-3xl p-6 flex flex-col md:flex-row gap-6 hover:shadow-xl hover:shadow-primary/5 transition-all">
+<div class="w-full md:w-32 h-32 rounded-2xl overflow-hidden bg-surface-container-low shrink-0 relative">
+<div class="absolute inset-0 bg-on-background/20 flex items-center justify-center">
+<span class="material-symbols-outlined text-on-primary text-3xl" data-icon="edit">edit</span>
+</div>
+<img alt="Quiz thumbnail" data-alt="minimalist overhead shot of a workspace with a retro keyboard and a violet notebook on a clean desk" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAkjW9_5CJghoOhJIRypxiPwqKv88Xsb0ao9B-WU2jHpCDFKRzyKxe5HtpKjETB6jKV-leaV72zHedXk2qhiozaYSE8kiM1FGsyC8eiYTUjBqZeu5SNvXQXU08r3IlIknB4zQXMqtdeuOscLrYLAdQuO0gIk-ayGVsKhWD71GD89wjavcvabN65-cWcLJS9znUwtyvp5_e2zOCSuV2HDbY5Jg988G3siinMIG4budFzBB6nHgBHxGFPEu3JNDmtruJnOOToC1AXGmk"/>
+</div>
+<div class="flex-1 flex flex-col justify-between py-1">
+<div>
+<div class="flex items-center justify-between mb-2">
+<span class="px-3 py-1 bg-surface-container-high text-on-surface-variant rounded-full text-[10px] font-bold uppercase tracking-widest">Draft</span>
+<span class="text-xs text-on-surface-variant">Modified 2h ago</span>
+</div>
+<h4 class="text-xl font-bold text-on-surface mb-1">Sustainable Architecture 101</h4>
+<p class="text-sm text-on-surface-variant">Exploring modern green materials and zero-waste designs.</p>
+</div>
+<div class="mt-4 flex items-center justify-between">
+<div class="flex items-center gap-4 text-xs font-bold text-on-surface-variant">
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-sm" data-icon="question_mark">question_mark</span> 12 Qs</span>
+</div>
+<div class="flex gap-2">
+<button class="px-4 py-2 rounded-xl bg-primary text-on-primary font-bold text-sm active:scale-95 transition-all">
+                                        Continue Building
+                                    </button>
+<button class="p-2 rounded-lg text-on-surface-variant hover:bg-surface-container-low transition-all">
+<span class="material-symbols-outlined" data-icon="more_vert">more_vert</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Quiz Card 3: Published -->
+<div class="bg-surface-container-lowest rounded-3xl p-6 flex flex-col md:flex-row gap-6 hover:shadow-xl hover:shadow-primary/5 transition-all">
+<div class="w-full md:w-32 h-32 rounded-2xl overflow-hidden bg-surface-container-low shrink-0">
+<img alt="Quiz thumbnail" data-alt="close up shot of glowing computer code on a dark screen with purple and blue light reflections" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAVuabbTPsGcDkxUjwxXyfknpCFNpAg7CWOlH-CO7ih2Xg-BsKdoQLbdhKJsMPRZgBHasmEhVZeaJ89a1FqxQcff8m_dAbGRf8KGxLL7diLgIUdZLA41pxEAmkCzeg2f1-GrC2RIm5fYZrh4NdzufCdREAIfbKt6P2sC5GQ7Vg2N5noavgM7La5Vn29mfcADj4LqzZXLLoYPmH9C2Gbd2xQbw9pD2twoBAkxLME6bbNhHgtgE1fitWJoGeYqOqnP9a4jUKclneKyys"/>
+</div>
+<div class="flex-1 flex flex-col justify-between py-1">
+<div>
+<div class="flex items-center justify-between mb-2">
+<span class="px-3 py-1 bg-secondary-container text-on-secondary-container rounded-full text-[10px] font-bold uppercase tracking-widest">Published</span>
+<span class="text-xs text-on-surface-variant">Created Sep 12, 2023</span>
+</div>
+<h4 class="text-xl font-bold text-on-surface mb-1">Tailwind CSS Mastery</h4>
+<p class="text-sm text-on-surface-variant">Testing component architectural knowledge and utility-first patterns.</p>
+</div>
+<div class="mt-4 flex items-center justify-between">
+<div class="flex items-center gap-4 text-xs font-bold text-on-surface-variant">
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-sm" data-icon="group">group</span> 4.8k</span>
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-sm" data-icon="timer">timer</span> 25m</span>
+</div>
+<div class="flex gap-2">
+<button class="p-2 rounded-lg text-primary hover:bg-surface-container-low transition-all">
+<span class="material-symbols-outlined" data-icon="analytics">analytics</span>
+</button>
+<button class="p-2 rounded-lg text-on-surface-variant hover:bg-surface-container-low transition-all">
+<span class="material-symbols-outlined" data-icon="more_vert">more_vert</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Add New Card Skeleton -->
+<div onclick="startQuizEditor()" class="bg-surface-container-low border-2 border-dashed border-outline-variant rounded-3xl p-6 flex items-center justify-center group cursor-pointer hover:bg-surface-container-high hover:border-primary transition-all">
+<div class="flex flex-col items-center gap-4">
+<div class="w-16 h-16 rounded-full bg-surface-container-lowest flex items-center justify-center group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-3xl text-primary" data-icon="add_circle">add_circle</span>
+</div>
+<span class="text-lg font-bold text-on-surface-variant group-hover:text-primary">Launch New Project</span>
+</div>
+</div>
+</div>
+</section>
+</main>
+</div>
+<!-- Mobile Navigation -->
+<nav class="md:hidden fixed bottom-0 left-0 right-0 glass-panel bg-surface/90 border-t border-outline-variant/10 px-6 py-4 flex justify-around items-center z-50">
+<a class="text-primary flex flex-col items-center gap-1" href="#">
+<span class="material-symbols-outlined" data-icon="grid_view" style="font-variation-settings: 'FILL' 1;">grid_view</span>
+<span class="text-[10px] font-bold">Dashboard</span>
+</a>
+<a class="text-on-surface-variant flex flex-col items-center gap-1" href="#">
+<span class="material-symbols-outlined" data-icon="quiz">quiz</span>
+<span class="text-[10px] font-bold">Quizzes</span>
+</a>
+<a class="w-12 h-12 primary-gradient rounded-full flex items-center justify-center text-on-primary -mt-10 shadow-lg shadow-primary/40 border-4 border-surface" href="#">
+<span class="material-symbols-outlined" data-icon="add">add</span>
+</a>
+<a class="text-on-surface-variant flex flex-col items-center gap-1" href="#">
+<span class="material-symbols-outlined" data-icon="analytics">analytics</span>
+<span class="text-[10px] font-bold">Stats</span>
+</a>
+<a class="text-on-surface-variant flex flex-col items-center gap-1" href="#">
+<span class="material-symbols-outlined" data-icon="person">person</span>
+<span class="text-[10px] font-bold">Profile</span>
+</a>
+</nav>
 
-      <div class="card">
-        <div class="q-list-header" onclick="toggleCollapse()">
-          <div class="card-title" style="margin-bottom:0;">⬡Questions
-            <span class="q-count-badge" id="qCountBadge">0</span>
-          </div>
-          <span class="collapse-icon open" id="collapseIcon">▲</span>
-        </div>
-        <div id="questionsContainer"></div>
-        <button class="btn btn-ghost" onclick="addQuestion()">+Add Question</button>
-      </div>
+    </div>
+    
+    <div id="editor-screen" class="screen flex-col w-full h-full">
+        
+<!-- TopNavBar -->
+<nav class="bg-[#f9f5ff] dark:bg-[#1a1625] h-16 flex justify-between items-center px-8 w-full max-w-full mx-auto z-50">
+<div class="flex items-center gap-12">
+<span class="text-xl font-bold text-[#2c2a51] dark:text-[#f3eeff] tracking-tight">Insight Flow</span>
+<div class="hidden md:flex gap-8 items-center">
+<button onclick="showScreen('dashboard-screen')" class="text-[#5a5781] dark:text-[#aca8d7] hover:text-[#3d30d4] transition-colors duration-200 text-sm font-medium">Dashboard</button>
+</div>
+</div>
+<div class="flex items-center gap-6">
+<div class="relative hidden lg:block">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-sm">search</span>
+<input class="bg-surface-container-low border-none rounded-xl pl-10 pr-4 py-2 text-sm focus:ring-2 focus:ring-primary w-64" placeholder="Search insights..." type="text"/>
+</div>
+<div class="flex items-center gap-4">
+<button class="p-2 text-on-surface-variant hover:bg-surface-container-high rounded-full transition-all">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+</button>
+<button class="bg-gradient-to-br from-primary to-primary-container text-on-primary px-6 py-2 rounded-xl font-bold text-sm hover:scale-[0.98] transition-all active:scale-[0.96]">
+                    Publish
+                </button>
+<div class="w-10 h-10 rounded-full overflow-hidden bg-surface-container">
+<img alt="User profile avatar" data-alt="professional portrait of a young designer with a clean background and soft studio lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAoR2_HPkI6tbs6CV__wedloNVyTFsQhOKvjoT2GzuXMQngbfGDTFoGn08yCYiU-41HHvPgGZoQxTsrpiZ0TexsNrYRr8J16NcPeMrDpyKpH8P-UKrdRiSL6Bl9ROk1qIy1If3d1A7-sG3rmWzZBpcAXbUox7uRv4PnB-yQmDToxIICE0EfoJRH7b-lWpyAK4p-vSv_4vydusWoY93nu8y5P7Oaqmm1-wpsahJ5Lxk6hgZge64DTw3W2GpegxKtBkYzFC7rmQW56w4"/>
+</div>
+</div>
+</div>
+</nav>
+<div class="flex flex-1 overflow-hidden">
+<!-- SideNavBar / Question Outline -->
+<aside class="bg-[#f3eeff] dark:bg-[#211d2e] h-full w-64 rounded-r-3xl flex flex-col py-6 px-4 shrink-0 overflow-y-auto no-scrollbar">
+<div class="mb-8 px-2">
+<div class="flex items-center gap-3 mb-1">
+<div class="w-8 h-8 bg-primary rounded-lg flex items-center justify-center text-on-primary">
+<span class="material-symbols-outlined text-sm">auto_awesome</span>
+</div>
+<span class="text-lg font-black text-[#2c2a51]">Creator Studio</span>
+</div>
+<p class="text-xs text-on-surface-variant font-medium">Insight Flow System</p>
+</div>
+<nav class="flex-1 space-y-1" id="editor-sidebar-list">
+<div class="text-[10px] uppercase tracking-widest text-on-surface-variant font-bold px-3 mb-4 opacity-50">Quiz Outline</div>
+<button class="w-full flex items-center gap-3 px-3 py-3 text-sm font-bold text-[#4a40e0] dark:text-[#9795ff] bg-surface-container-lowest rounded-xl shadow-sm transition-all duration-150">
+<span class="material-symbols-outlined text-[20px]" data-icon="quiz">quiz</span>
+                    Question 1
+                </button>
+<button class="w-full flex items-center gap-3 px-3 py-3 text-sm font-medium text-[#5a5781] dark:text-[#aca8d7] hover:bg-[#e3dfff] dark:hover:bg-[#2d283e] rounded-xl transition-all">
+<span class="material-symbols-outlined text-[20px]" data-icon="help">help</span>
+                    Question 2
+                </button>
+<button class="w-full flex items-center gap-3 px-3 py-3 text-sm font-medium text-[#5a5781] dark:text-[#aca8d7] hover:bg-[#e3dfff] dark:hover:bg-[#2d283e] rounded-xl transition-all">
+<span class="material-symbols-outlined text-[20px]" data-icon="help">help</span>
+                    Question 3
+                </button>
+<div class="pt-8 space-y-1 border-t border-outline-variant/10 mt-4">
+<button class="w-full flex items-center gap-3 px-3 py-3 text-sm font-medium text-[#5a5781] dark:text-[#aca8d7] hover:bg-[#e3dfff] dark:hover:bg-[#2d283e] rounded-xl transition-all">
+<span class="material-symbols-outlined text-[20px]" data-icon="settings">settings</span>
+                        Settings
+                    </button>
+</div>
+</nav>
+<button onclick="addQuestion()" class="mt-auto bg-primary text-on-primary py-4 rounded-2xl font-bold flex items-center justify-center gap-2 hover:scale-[0.98] transition-all">
+<span class="material-symbols-outlined">add_circle</span>
+                Add Question
+            </button>
+</aside>
+<!-- Main Content Area -->
+<main class="flex-1 p-8 overflow-y-auto bg-surface relative">
+<div class="max-w-4xl mx-auto space-y-12 pb-24" id="editor-main-area">
+<!-- Section 1: Question Setup -->
+<section class="space-y-6">
+<div class="flex justify-between items-end">
+<div>
+<span class="text-primary font-bold text-sm tracking-wider uppercase">Editing Question 1</span>
+<h1 class="text-3xl font-extrabold text-on-surface mt-1">Refine your inquiry</h1>
+</div>
+<div class="w-64">
+<label class="block text-xs font-bold text-on-surface-variant mb-2 uppercase tracking-tight">Question Type</label>
+<div class="relative">
+<select class="w-full bg-surface-container-low border-none rounded-xl py-3 px-4 text-on-surface font-medium focus:ring-2 focus:ring-primary appearance-none cursor-pointer">
+<option>Multiple Choice</option>
+<option>True/False</option>
+<option>Short Answer</option>
+</select>
+<span class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-on-surface-variant">expand_more</span>
+</div>
+</div>
+</div>
+<div class="bg-surface-container-lowest p-8 rounded-3xl shadow-[0_40px_60px_-15px_rgba(74,64,224,0.06)]">
+<label class="block text-xs font-bold text-on-surface-variant mb-3 uppercase tracking-tight">Question Text</label>
+<textarea class="w-full bg-surface-container-low border-none rounded-2xl p-6 text-xl font-headline font-semibold text-on-surface placeholder:text-on-surface-variant/40 focus:ring-2 focus:ring-primary transition-all" placeholder="What is the primary architectural principle of the Fluid Architect design system?" rows="3"></textarea>
+</div>
+</section>
+<!-- Section 2: Answer Choices (Bento Style) -->
+<section class="space-y-6">
+<div class="flex items-center justify-between">
+<h2 class="text-xl font-bold text-on-surface">Answer Choices</h2>
+<button onclick="addCurrentQuestionChoice()" class="flex items-center gap-2 text-primary font-bold text-sm px-4 py-2 hover:bg-primary-container/20 rounded-xl transition-all">
+<span class="material-symbols-outlined text-lg">add</span>
+                            Add Choice
+                        </button>
+</div>
+<div class="grid grid-cols-1 gap-4" id="editor-choices-list">
+<!-- Choice 1 -->
+<div class="group flex items-center gap-6 bg-surface-container-lowest p-5 rounded-2xl border-2 border-transparent hover:border-primary/20 transition-all">
+<div class="relative flex items-center justify-center">
+<input checked="" class="w-6 h-6 text-primary border-outline-variant focus:ring-primary ring-offset-background bg-surface-container-low" name="correct_answer" type="radio"/>
+<span class="absolute -top-6 text-[10px] font-black text-primary opacity-0 group-hover:opacity-100 transition-opacity">CORRECT</span>
+</div>
+<div class="flex-1">
+<input class="w-full bg-transparent border-none p-0 text-on-surface font-medium focus:ring-0" type="text" value="Intentional Asymmetry and Tonal Depth"/>
+</div>
+<button class="p-2 text-on-surface-variant opacity-0 group-hover:opacity-100 transition-opacity hover:text-error">
+<span class="material-symbols-outlined">delete</span>
+</button>
+</div>
+<!-- Choice 2 -->
+<div class="group flex items-center gap-6 bg-surface-container-lowest p-5 rounded-2xl border-2 border-transparent hover:border-primary/20 transition-all">
+<div class="relative flex items-center justify-center">
+<input class="w-6 h-6 text-primary border-outline-variant focus:ring-primary ring-offset-background bg-surface-container-low" name="correct_answer" type="radio"/>
+</div>
+<div class="flex-1">
+<input class="w-full bg-transparent border-none p-0 text-on-surface font-medium focus:ring-0" type="text" value="Standard 12-column rigid grid layout"/>
+</div>
+<button class="p-2 text-on-surface-variant opacity-0 group-hover:opacity-100 transition-opacity hover:text-error">
+<span class="material-symbols-outlined">delete</span>
+</button>
+</div>
+<!-- Choice 3 -->
+<div class="group flex items-center gap-6 bg-surface-container-lowest p-5 rounded-2xl border-2 border-transparent hover:border-primary/20 transition-all">
+<div class="relative flex items-center justify-center">
+<input class="w-6 h-6 text-primary border-outline-variant focus:ring-primary ring-offset-background bg-surface-container-low" name="correct_answer" type="radio"/>
+</div>
+<div class="flex-1">
+<input class="w-full bg-transparent border-none p-0 text-on-surface font-medium focus:ring-0" type="text" value="High contrast pure black text and borders"/>
+</div>
+<button class="p-2 text-on-surface-variant opacity-0 group-hover:opacity-100 transition-opacity hover:text-error">
+<span class="material-symbols-outlined">delete</span>
+</button>
+</div>
+</div>
+</section>
+</div>
+<!-- Floating Live Preview (Glassmorphism) -->
+<div class="fixed right-12 bottom-12 w-80 glass-panel rounded-3xl p-6 shadow-2xl border border-surface-container-lowest/50" id="editor-live-preview">
+<div class="flex items-center justify-between mb-6">
+<span class="text-xs font-bold text-primary uppercase tracking-tighter">Live Preview</span>
+<span class="material-symbols-outlined text-primary-container" style="font-variation-settings: 'FILL' 1;">visibility</span>
+</div>
+<div class="space-y-4">
+<div class="h-2 w-full bg-surface-container-high rounded-full overflow-hidden">
+<div class="h-full bg-primary w-1/4 rounded-full"></div>
+</div>
+<div class="text-[11px] font-bold text-on-surface-variant mb-4">Question 1 of 4</div>
+<div class="space-y-3">
+<div class="p-3 bg-surface-container-lowest rounded-xl shadow-sm border border-primary/10">
+<p class="text-[13px] font-semibold text-on-surface leading-tight">What is the primary architectural principle of the Fluid Architect design system?</p>
+</div>
+<div class="grid grid-cols-1 gap-2">
+<div class="p-2.5 bg-primary/10 rounded-lg text-[11px] font-bold text-primary flex items-center gap-2">
+<span class="material-symbols-outlined text-[14px]">check_circle</span>
+                                Intentional Asymmetry...
+                            </div>
+<div class="p-2.5 bg-surface-container-low rounded-lg text-[11px] text-on-surface-variant">Standard 12-column grid</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
 
-      <div class="row" style="justify-content:flex-end;">
-        <button class="btn btn-ghost" onclick="clearAll()" id="clearBtn" style="display:none">🗑Clear All</button>
-        <button class="btn btn-primary" id="startBtn" onclick="startQuiz()" disabled>Start Quiz→</button>
-      </div>
+    </div>
+    
+    <div id="taking-screen" class="screen flex-col overflow-y-auto w-full">
+        
+<!-- Top Navigation Suppression: Not a top-level destination, task-focused -->
+<main class="max-w-4xl mx-auto px-6 py-12 md:py-20">
+<!-- Header & Breadcrumb Context -->
+<div class="mb-12 flex flex-col gap-2">
+<div class="flex items-center gap-2 text-on-surface-variant mb-2">
+<span class="material-symbols-outlined text-sm">school</span>
+<span class="font-label text-sm font-medium tracking-wide">Sustainable Architecture 101</span>
+</div>
+<div class="flex justify-between items-end">
+<h1 class="font-headline text-3xl md:text-4xl font-extrabold text-on-surface tracking-tight" id="taking-question-title">Question 1 of 4</h1>
+<span class="font-label text-primary font-bold text-lg" id="taking-progress-text">25% complete</span>
+</div>
+<!-- Progress Bar (The Progress Bloom) -->
+<div class="h-4 w-full bg-surface-container-low rounded-full mt-6 overflow-hidden">
+<div class="h-full w-1/4 progress-bloom rounded-full transition-all duration-500" id="taking-progress-bar"></div>
+</div>
+</div>
+<!-- Question Canvas -->
+<section class="flex flex-col gap-8">
+<!-- Question Content -->
+<div class="surface-container-lowest glass-panel p-8 md:p-12 rounded-xl">
+<h2 class="font-headline text-2xl md:text-3xl font-bold leading-snug text-on-surface mb-4" id="taking-question-text">
+                    What is the primary architectural principle of the Fluid Architect design system?
+                </h2>
+<div class="h-1 w-12 bg-primary rounded-full opacity-30"></div>
+</div>
+<!-- Answer Choices (Large Interactive Bento-style Cards) -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4" id="taking-choices-container">
+<!-- Option 1: Selected State -->
+<button class="group relative flex flex-col items-start p-6 rounded-xl text-left bg-surface-container-lowest ring-2 ring-primary transition-all duration-200">
+<div class="absolute top-4 right-4 h-6 w-6 rounded-full bg-primary flex items-center justify-center">
+<span class="material-symbols-outlined text-white text-sm" style="font-variation-settings: 'wght' 700;">check</span>
+</div>
+<span class="font-label text-primary-dim font-bold text-xs mb-3 tracking-widest">OPTION A</span>
+<p class="font-body text-lg font-semibold text-on-surface">Intentional Asymmetry and Tonal Depth</p>
+</button>
+<!-- Option 2 -->
+<button class="group relative flex flex-col items-start p-6 rounded-xl text-left bg-surface-container-lowest hover:bg-surface-container-high transition-all duration-200">
+<span class="font-label text-on-surface-variant font-bold text-xs mb-3 tracking-widest">OPTION B</span>
+<p class="font-body text-lg font-medium text-on-surface">Standard 12-column rigid grid layout</p>
+</button>
+<!-- Option 3 -->
+<button class="group relative flex flex-col items-start p-6 rounded-xl text-left bg-surface-container-lowest hover:bg-surface-container-high transition-all duration-200">
+<span class="font-label text-on-surface-variant font-bold text-xs mb-3 tracking-widest">OPTION C</span>
+<p class="font-body text-lg font-medium text-on-surface">High contrast pure black text and borders</p>
+</button>
+<!-- Option 4 -->
+<button class="group relative flex flex-col items-start p-6 rounded-xl text-left bg-surface-container-lowest hover:bg-surface-container-high transition-all duration-200">
+<span class="font-label text-on-surface-variant font-bold text-xs mb-3 tracking-widest">OPTION D</span>
+<p class="font-body text-lg font-medium text-on-surface">Symmetrical geometric minimalism</p>
+</button>
+</div>
+</section>
+<!-- Navigation Actions -->
+<footer class="mt-16 flex justify-between items-center">
+<button onclick="showScreen('dashboard-screen')" class="flex items-center gap-2 px-6 py-3 rounded-xl font-label font-bold text-primary hover:bg-surface-container-high transition-all">
+<span class="material-symbols-outlined">arrow_back</span>
+                Back
+            </button>
+<button onclick="takingNextQuestion()" class="progress-bloom px-8 py-3 rounded-xl flex items-center gap-3 font-label font-bold text-on-primary shadow-lg shadow-primary/20 hover:scale-105 active:scale-95 transition-all">
+                Next Question
+                <span class="material-symbols-outlined">arrow_forward</span>
+</button>
+</footer>
+</main>
+<!-- Side Content: Insight Flow / Study Card (Asymmetric Layout Moment) -->
+<div class="fixed right-8 top-1/2 -translate-y-1/2 hidden xl:flex flex-col gap-4 w-64">
+<div class="surface-container-low p-6 rounded-xl border-l-4 border-primary">
+<div class="flex items-center gap-2 text-primary mb-3">
+<span class="material-symbols-outlined">lightbulb</span>
+<span class="font-label text-xs font-bold uppercase tracking-tighter">Pro Insight</span>
+</div>
+<p class="text-sm text-on-surface-variant leading-relaxed" id="taking-pro-insight">
+                Think about how <span class="text-primary font-semibold">negative space</span> creates breathing zones. The Fluid Architect system moves away from rigid boxes.
+            </p>
+</div>
+<!-- Decorative Card with Image -->
+<div class="relative h-48 w-full rounded-xl overflow-hidden group">
+<img class="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" data-alt="Modern sustainable building with fluid glass curves and green rooftop integrated with a soft lavender sunset background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCKESPZ2ersF2FiBP0_HNbMp0y3h-qQYP3ayp-gb5cbDa9_glY-_hBMNYDpQfIeGFtaFWr3PRSD72ImgeXUMK6pQgpZMrVl-Q5MrKGpmOiSz5SVy-LxX_aNZjARDVKSG5A4kWZxsA-sq0KpeahtolABaCBI-rXm2praEs72mjQSezaD_g0oJ5WSVBK6VPcTfuXM4odpXMtBlIdbfMYYDG5vI7yOnRv0nLsWEuxTWKGPSWeJ2WeVkCo4-t7qfAZ9jZlhDmnnGSlurN8"/>
+<div class="absolute inset-0 bg-gradient-to-t from-primary/60 to-transparent"></div>
+<div class="absolute bottom-4 left-4">
+<span class="text-white font-headline text-sm font-bold">Inspiration: Curvature</span>
+</div>
+</div>
+</div>
+
+    </div>
+    
+    <div id="results-screen" class="screen flex-col items-center justify-center w-full bg-surface p-8 overflow-y-auto">
+        <div class="max-w-2xl w-full text-center">
+            <h1 class="font-headline text-4xl font-extrabold text-on-surface mb-2">Quiz Complete!</h1>
+            <p id="resultSub" class="text-xl text-on-surface-variant font-medium mb-8">You got X out of Y correct</p>
+            <div class="w-48 h-48 mx-auto relative mb-12">
+                <svg viewBox="0 0 136 136" class="w-full h-full -rotate-90">
+                    <circle cx="68" cy="68" r="62" class="stroke-surface-container-highest fill-none" stroke-width="8"></circle>
+                    <circle cx="68" cy="68" r="62" id="scoreArc" class="stroke-primary fill-none transition-all duration-1000" stroke-width="8" stroke-dasharray="389.6" stroke-dashoffset="389.6" stroke-linecap="round"></circle>
+                </svg>
+                <div class="absolute inset-0 flex flex-col items-center justify-center">
+                    <span id="scoreNum" class="font-headline text-5xl font-extrabold text-primary">0/0</span>
+                </div>
+            </div>
+            
+            <div class="flex justify-between items-center mb-6 border-b border-surface-container-highest pb-4">
+                <h3 class="font-headline text-xl font-bold text-on-surface">Review Answers</h3>
+                <label class="flex items-center gap-2 cursor-pointer text-on-surface-variant text-sm font-bold">
+                    <input type="checkbox" id="wrongOnlyToggle" class="rounded text-primary focus:ring-primary h-5 w-5 border-outline-variant" onchange="toggleWrongOnly()">
+                    Show wrong only
+                </label>
+            </div>
+            
+            <div id="reviewList" class="flex flex-col gap-4 text-left mb-12 w-full">
+            </div>
+            
+            <div class="flex items-center justify-center gap-6">
+                <button onclick="showScreen('dashboard-screen')" class="px-6 py-3 rounded-xl font-bold text-primary hover:bg-surface-container-high transition-all">Back to Dashboard</button>
+                <button onclick="startQuiz(currentPlayingQuizId)" class="px-8 py-3 rounded-xl font-bold bg-primary text-on-primary shadow-lg shadow-primary/20 hover:scale-[0.98] transition-all">Play Again</button>
+            </div>
+        </div>
     </div>
 
-    <!--══QUIZ══-->
-    <div class="screen" id="quizScreen">
-      <div class="progress-bar-wrap">
-        <div class="progress-bar-fill" id="progressBar" style="width:0%"></div>
-      </div>
-      <div class="q-counter" id="qCounter">Question 1 of 1</div>
-      <div class="q-text" id="qText"></div>
-      <div class="options-list" id="optionsList"></div>
-      <div class="row" style="justify-content:flex-end;">
-        <button class="btn btn-primary" id="nextBtn" onclick="nextQuestion()" style="display:none">Next→</button>
-        <button class="btn btn-accent2" id="finishBtn" onclick="showResults()" style="display:none">Finish & Review</button>
-      </div>
-    </div>
+    <!-- FORMAT MODAL -->
+    <div id="formatModal" class="hidden fixed inset-0 bg-background/80 backdrop-blur-sm z-[100] flex items-center justify-center p-4">
+        <div class="bg-surface-container-lowest border border-outline-variant/30 rounded-3xl p-8 max-w-xl w-full max-h-[80vh] overflow-y-auto shadow-2xl">
+            <h3 class="font-headline text-2xl font-bold text-on-surface mb-4">📋 File Format Guide</h3>
+            <p class="text-on-surface-variant font-medium mb-4">Save your questions as a plain <strong>.txt</strong> file using this structure:</p>
+            <div class="bg-surface-container-low border border-outline-variant/50 rounded-xl p-4 font-mono text-sm text-on-surface-variant whitespace-pre overflow-x-auto mb-6">
+1) Your question text here ?
+*
+Correct answer option
+Wrong option B
+Wrong option C
+Wrong option D
 
-    <!--══RESULTS══-->
-    <div class="screen" id="resultsScreen">
-      <div class="result-center">
-        <div class="score-circle">
-          <svg viewBox="0 0 136 136">
-            <circle class="track" cx="68" cy="68" r="62" />
-            <circle class="fill" cx="68" cy="68" r="62" id="scoreArc" stroke-dasharray="389.6" stroke-dashoffset="389.6" />
-          </svg>
-          <div class="score-num" id="scoreNum">0 / 0</div>
-          <div class="score-label">Score</div>
+2) Another question ?
+*
+Correct answer
+Wrong option B
+Wrong option C
+Wrong option D
+            </div>
+            <p class="text-on-surface-variant text-sm mb-8 space-y-2">
+                <strong>Rules:</strong><br>
+                • Start each question with a number + <code>)</code> or <code>.</code><br>
+                • Place <code>*</code> on its own line right before the correct answer<br>
+                • Each question needs exactly <strong>4 options</strong><br>
+                • Blank lines between questions are fine
+            </p>
+            <div class="flex justify-end">
+                <button onclick="document.getElementById('formatModal').classList.add('hidden')" class="px-6 py-2 rounded-xl bg-primary text-on-primary font-bold shadow-md hover:scale-[0.98] transition-all">Got it</button>
+            </div>
         </div>
-        <div class="result-title" id="resultTitle">Quiz Complete!</div>
-        <div class="result-sub" id="resultSub"></div>
-      </div>
-      <div class="toggle-wrap">
-        <div class="section-title" style="margin:0">Review Answers</div>
-        <label class="toggle-label" onclick="toggleWrongOnly()">Wrong only <div class="toggle" id="wrongToggle"></div></label>
-      </div>
-      <div id="reviewList"></div>
-      <div class="row" style="justify-content:center;margin-top:1.5rem;">
-        <button class="btn btn-ghost" onclick="backToSetup()">←Edit Questions</button>
-        <button class="btn btn-primary" onclick="restartQuiz()">Play Again</button>
-      </div>
-    </div>
-
-    <!--══FORMAT MODAL══-->
-    <div class="modal-overlay hidden" id="formatModal" onclick="closeModal(event)">
-      <div class="modal">
-        <h3>📋File Format Guide</h3>
-        <p>Save your questions as a plain <strong>.txt</strong> file using this structure:</p>
-        <div class="format-box">
-          1) Your question text here ?
-          *
-          Correct answer option
-          Wrong option B
-          Wrong option C
-          Wrong option D
-
-          2) Another question ?
-          *
-          Correct answer
-          Wrong option B
-          Wrong option C
-          Wrong option D
-        </div>
-        <p style="margin-top:1rem"><strong>Rules:</strong><br>• Start each question with a number + <code>)</code> or <code>.</code> — e.g. <code>1)</code>, <code>Q1.</code><br>• Place <code>*</code> on its own line right before the correct answer<br>• Each question needs exactly <strong>4 options</strong><br>• Blank lines between questions are fine<br>• Noise lines like <code>Bloom Level:</code>, <code>1/1</code>, <code>Correct ✅</code> and Arabic comments are auto-skipped</p>
-        <div style="margin-top:1.5rem;text-align:right;"><button class="btn btn-primary" onclick="document.getElementById('formatModal').classList.add('hidden')">Got it</button></div>
-      </div>
     </div>
 
     <script src="script.js"></script>
-  </body>
+</body>
 </html>
