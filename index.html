@@ -1,0 +1,114 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MCQ Quiz App</title>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <h1>Quiz Builder</h1>
+    <p class="subtitle">Build· Import· Play· Review</p>
+
+    <!--══SETUP══-->
+    <div class="screen active" id="setupScreen">
+      <div class="card">
+        <div class="card-title">⬆Import from File</div>
+        <div class="import-zone" id="importZone">
+          <input type="file" accept=".txt" id="fileInput" onchange="handleFileImport(event)" />
+          <div class="import-icon">📄</div>
+          <div class="import-title">Drop a .txt file or click to browse</div>
+          <div class="import-sub">Questions are added on top of existing ones</div>
+        </div>
+        <div class="import-status" id="importStatus"></div>
+        <div style="margin-top:1.2rem; display:flex; gap:0.7rem; flex-wrap:wrap;">
+          <button class="btn btn-ghost" onclick="showFormatHelp()" style="font-size:0.82rem;padding:0.5rem 1rem;">📋Format guide</button>
+          <button class="btn btn-green" onclick="downloadTemplate()" style="font-size:0.82rem;padding:0.5rem 1rem;">⬇Download template</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="q-list-header" onclick="toggleCollapse()">
+          <div class="card-title" style="margin-bottom:0;">⬡Questions
+            <span class="q-count-badge" id="qCountBadge">0</span>
+          </div>
+          <span class="collapse-icon open" id="collapseIcon">▲</span>
+        </div>
+        <div id="questionsContainer"></div>
+        <button class="btn btn-ghost" onclick="addQuestion()">+Add Question</button>
+      </div>
+
+      <div class="row" style="justify-content:flex-end;">
+        <button class="btn btn-ghost" onclick="clearAll()" id="clearBtn" style="display:none">🗑Clear All</button>
+        <button class="btn btn-primary" id="startBtn" onclick="startQuiz()" disabled>Start Quiz→</button>
+      </div>
+    </div>
+
+    <!--══QUIZ══-->
+    <div class="screen" id="quizScreen">
+      <div class="progress-bar-wrap">
+        <div class="progress-bar-fill" id="progressBar" style="width:0%"></div>
+      </div>
+      <div class="q-counter" id="qCounter">Question 1 of 1</div>
+      <div class="q-text" id="qText"></div>
+      <div class="options-list" id="optionsList"></div>
+      <div class="row" style="justify-content:flex-end;">
+        <button class="btn btn-primary" id="nextBtn" onclick="nextQuestion()" style="display:none">Next→</button>
+        <button class="btn btn-accent2" id="finishBtn" onclick="showResults()" style="display:none">Finish & Review</button>
+      </div>
+    </div>
+
+    <!--══RESULTS══-->
+    <div class="screen" id="resultsScreen">
+      <div class="result-center">
+        <div class="score-circle">
+          <svg viewBox="0 0 136 136">
+            <circle class="track" cx="68" cy="68" r="62" />
+            <circle class="fill" cx="68" cy="68" r="62" id="scoreArc" stroke-dasharray="389.6" stroke-dashoffset="389.6" />
+          </svg>
+          <div class="score-num" id="scoreNum">0 / 0</div>
+          <div class="score-label">Score</div>
+        </div>
+        <div class="result-title" id="resultTitle">Quiz Complete!</div>
+        <div class="result-sub" id="resultSub"></div>
+      </div>
+      <div class="toggle-wrap">
+        <div class="section-title" style="margin:0">Review Answers</div>
+        <label class="toggle-label" onclick="toggleWrongOnly()">Wrong only <div class="toggle" id="wrongToggle"></div></label>
+      </div>
+      <div id="reviewList"></div>
+      <div class="row" style="justify-content:center;margin-top:1.5rem;">
+        <button class="btn btn-ghost" onclick="backToSetup()">←Edit Questions</button>
+        <button class="btn btn-primary" onclick="restartQuiz()">Play Again</button>
+      </div>
+    </div>
+
+    <!--══FORMAT MODAL══-->
+    <div class="modal-overlay hidden" id="formatModal" onclick="closeModal(event)">
+      <div class="modal">
+        <h3>📋File Format Guide</h3>
+        <p>Save your questions as a plain <strong>.txt</strong> file using this structure:</p>
+        <div class="format-box">
+          1) Your question text here ?
+          *
+          Correct answer option
+          Wrong option B
+          Wrong option C
+          Wrong option D
+
+          2) Another question ?
+          *
+          Correct answer
+          Wrong option B
+          Wrong option C
+          Wrong option D
+        </div>
+        <p style="margin-top:1rem"><strong>Rules:</strong><br>• Start each question with a number + <code>)</code> or <code>.</code> — e.g. <code>1)</code>, <code>Q1.</code><br>• Place <code>*</code> on its own line right before the correct answer<br>• Each question needs exactly <strong>4 options</strong><br>• Blank lines between questions are fine<br>• Noise lines like <code>Bloom Level:</code>, <code>1/1</code>, <code>Correct ✅</code> and Arabic comments are auto-skipped</p>
+        <div style="margin-top:1.5rem;text-align:right;"><button class="btn btn-primary" onclick="document.getElementById('formatModal').classList.add('hidden')">Got it</button></div>
+      </div>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>
