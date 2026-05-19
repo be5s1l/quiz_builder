@@ -9,7 +9,7 @@ let questions = [],
   activeScreen = 'quizScreen';
 
 const LABELS = ['A', 'B', 'C', 'D'];
-const SESSION_KEY = 'quiz_companion_session_v2';
+const SESSION_KEY = 'quiz_companion_session_v3';
 
 function saveSession() {
   const session = {
@@ -183,7 +183,7 @@ function toggleCollapse() {
 
 /* ===== QUIZ ===== */
 function startQuiz() {
-  quizOrder = shuffle([...questions.keys()]);
+  quizOrder = [...questions.keys()];
   currentIdx = 0;
   userAnswers = new Array(questions.length).fill(null);
   activeScreen = 'quizScreen';
