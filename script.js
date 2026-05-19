@@ -26,7 +26,7 @@ let questions = [],
   activeScreen = 'quizScreen';
 
 const LABELS = ['A', 'B', 'C', 'D'];
-const SESSION_KEY = 'quiz_companion_session_v4';
+const SESSION_KEY = 'quiz_companion_session_v5';
 
 function saveSession() {
   const session = {
