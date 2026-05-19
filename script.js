@@ -418,6 +418,19 @@ function restartQuiz() {
   startQuiz();
 }
 
+function resetQuiz() {
+  localStorage.removeItem(SESSION_KEY);
+  selectedTopics.clear();
+  questions = [];
+  quizOrder = [];
+  currentIdx = 0;
+  userAnswers = [];
+  activeScreen = 'quizScreen';
+  initTopicSelector();
+  selectAllTopics();
+  startQuiz();
+}
+
 function escHtml(s) {
   return String(s).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 }

@@ -81,8 +81,9 @@
         <label class="toggle-label" onclick="toggleWrongOnly()">Wrong only <div class="toggle" id="wrongToggle"></div></label>
       </div>
       <div id="reviewList"></div>
-      <div class="row" style="justify-content:center;margin-top:1.5rem;">
+      <div class="row" style="justify-content:center;margin-top:1.5rem;gap:0.8rem;">
         <button class="btn btn-ghost" onclick="backToSetup()">←Back to Setup</button>
+        <button class="btn btn-ghost" onclick="resetQuiz()" style="color:var(--wrong); border-color:rgba(248,113,113,0.25);">Reset Quiz</button>
         <button class="btn btn-primary" onclick="restartQuiz()">Play Again</button>
       </div>
     </div>
