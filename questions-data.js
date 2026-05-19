@@ -3839,5 +3839,725 @@ const questionsData = [
     ],
     "correct": "C",
     "topic": "Marketing Mix MCQs"
+  },
+  {
+    "question": "What is entrepreneurial finance mainly concerned with?",
+    "options": [
+      {
+        "id": "A",
+        "text": "Recording past transactions only"
+      },
+      {
+        "id": "B",
+        "text": "Starting, funding, managing, and scaling a new venture"
+      },
+      {
+        "id": "C",
+        "text": "Preparing tax returns for large companies"
+      },
+      {
+        "id": "D",
+        "text": "Monitoring employee attendance"
+      }
+    ],
+    "correct": "B",
+    "topic": "Finance Quiz",
+    "id": 161
+  },
+  {
+    "question": "Which of the following best describes entrepreneurial accounting according to the lecture?",
+    "options": [
+      {
+        "id": "A",
+        "text": "It is future-oriented and focuses on fundraising"
+      },
+      {
+        "id": "B",
+        "text": "It focuses on recording and reporting past transactions"
+      },
+      {
+        "id": "C",
+        "text": "It is mainly about investor pitching"
+      },
+      {
+        "id": "D",
+        "text": "It is only used by large corporations"
+      }
+    ],
+    "correct": "B",
+    "topic": "Finance Quiz",
+    "id": 162
+  },
+  {
+    "question": "What is the main question of entrepreneurial finance?",
+    "options": [
+      {
+        "id": "A",
+        "text": "What happened financially?"
+      },
+      {
+        "id": "B",
+        "text": "How do we fund and grow?"
+      },
+      {
+        "id": "C",
+        "text": "How many employees are needed?"
+      },
+      {
+        "id": "D",
+        "text": "What is the tax rate?"
+      }
+    ],
+    "correct": "B",
+    "topic": "Finance Quiz",
+    "id": 163
+  },
+  {
+    "question": "Which funding source usually allows founders to keep full control of the business?",
+    "options": [
+      {
+        "id": "A",
+        "text": "Venture capital"
+      },
+      {
+        "id": "B",
+        "text": "Angel investment"
+      },
+      {
+        "id": "C",
+        "text": "Bootstrapping"
+      },
+      {
+        "id": "D",
+        "text": "Crowdfunding"
+      }
+    ],
+    "correct": "C",
+    "topic": "Finance Quiz",
+    "id": 164
+  },
+  {
+    "question": "What is one major disadvantage of family and friends funding?",
+    "options": [
+      {
+        "id": "A",
+        "text": "High repayment pressure"
+      },
+      {
+        "id": "B",
+        "text": "Relationship risk"
+      },
+      {
+        "id": "C",
+        "text": "Immediate equity dilution to the public"
+      },
+      {
+        "id": "D",
+        "text": "Strict bank collateral requirements"
+      }
+    ],
+    "correct": "B",
+    "topic": "Finance Quiz",
+    "id": 165
+  },
+  {
+    "question": "Which funding source is described as providing equity capital plus mentoring?",
+    "options": [
+      {
+        "id": "A",
+        "text": "Debt financing"
+      },
+      {
+        "id": "B",
+        "text": "Angel investors"
+      },
+      {
+        "id": "C",
+        "text": "Trade credit"
+      },
+      {
+        "id": "D",
+        "text": "Bootstrapping"
+      }
+    ],
+    "correct": "B",
+    "topic": "Finance Quiz",
+    "id": 166
+  },
+  {
+    "question": "What is a common disadvantage of venture capital?",
+    "options": [
+      {
+        "id": "A",
+        "text": "No access to large funding rounds"
+      },
+      {
+        "id": "B",
+        "text": "High growth pressure"
+      },
+      {
+        "id": "C",
+        "text": "No mentoring support"
+      },
+      {
+        "id": "D",
+        "text": "Guaranteed low risk"
+      }
+    ],
+    "correct": "B",
+    "topic": "Finance Quiz",
+    "id": 167
+  },
+  {
+    "question": "What is the main advantage of debt financing according to the lecture?",
+    "options": [
+      {
+        "id": "A",
+        "text": "It guarantees market validation"
+      },
+      {
+        "id": "B",
+        "text": "It avoids ownership loss"
+      },
+      {
+        "id": "C",
+        "text": "It eliminates repayment obligations"
+      },
+      {
+        "id": "D",
+        "text": "It provides mentoring automatically"
+      }
+    ],
+    "correct": "B",
+    "topic": "Finance Quiz",
+    "id": 168
+  },
+  {
+    "question": "What does crowdfunding mainly involve?",
+    "options": [
+      {
+        "id": "A",
+        "text": "Borrowing from banks only"
+      },
+      {
+        "id": "B",
+        "text": "Receiving one large government grant"
+      },
+      {
+        "id": "C",
+        "text": "Collecting many small contributions online"
+      },
+      {
+        "id": "D",
+        "text": "Selling company assets"
+      }
+    ],
+    "correct": "C",
+    "topic": "Finance Quiz",
+    "id": 169
+  },
+  {
+    "question": "According to the lecture, the best rule of thumb for choosing a funding source is to match it with the startup’s:",
+    "options": [
+      {
+        "id": "A",
+        "text": "Office size and number of employees"
+      },
+      {
+        "id": "B",
+        "text": "Stage, risk level, and cash needs"
+      },
+      {
+        "id": "C",
+        "text": "Advertising budget only"
+      },
+      {
+        "id": "D",
+        "text": "Founder’s age"
+      }
+    ],
+    "correct": "B",
+    "topic": "Finance Quiz",
+    "id": 170
+  },
+  {
+    "question": "What does cash flow mean?",
+    "options": [
+      {
+        "id": "A",
+        "text": "The amount of accounting profit earned yearly"
+      },
+      {
+        "id": "B",
+        "text": "The movement of cash into and out of the business"
+      },
+      {
+        "id": "C",
+        "text": "The value of the company after funding"
+      },
+      {
+        "id": "D",
+        "text": "The total number of investors in a startup"
+      }
+    ],
+    "correct": "B",
+    "topic": "Finance Quiz",
+    "id": 171
+  },
+  {
+    "question": "Burn rate refers to:",
+    "options": [
+      {
+        "id": "A",
+        "text": "The total market size of a startup"
+      },
+      {
+        "id": "B",
+        "text": "The amount of cash a startup spends over a period"
+      },
+      {
+        "id": "C",
+        "text": "The value of founder shares"
+      },
+      {
+        "id": "D",
+        "text": "The amount of taxes paid monthly"
+      }
+    ],
+    "correct": "B",
+    "topic": "Finance Quiz",
+    "id": 172
+  },
+  {
+    "question": "Runway shows:",
+    "options": [
+      {
+        "id": "A",
+        "text": "How fast revenue is growing"
+      },
+      {
+        "id": "B",
+        "text": "How long the startup can operate before cash runs out"
+      },
+      {
+        "id": "C",
+        "text": "How many employees can be hired"
+      },
+      {
+        "id": "D",
+        "text": "How much equity investors receive"
+      }
+    ],
+    "correct": "B",
+    "topic": "Finance Quiz",
+    "id": 173
+  },
+  {
+    "question": "What is the simple runway formula given in the lecture?",
+    "options": [
+      {
+        "id": "A",
+        "text": "Runway = Revenue ÷ Expenses"
+      },
+      {
+        "id": "B",
+        "text": "Runway = Cash on hand ÷ Net monthly burn"
+      },
+      {
+        "id": "C",
+        "text": "Runway = Profit × 12"
+      },
+      {
+        "id": "D",
+        "text": "Runway = Assets − Liabilities"
+      }
+    ],
+    "correct": "B",
+    "topic": "Finance Quiz",
+    "id": 174
+  },
+  {
+    "question": "Why do founders monitor runway continuously?",
+    "options": [
+      {
+        "id": "A",
+        "text": "Because accounting profit is always enough for survival"
+      },
+      {
+        "id": "B",
+        "text": "Because fundraising takes time and uncertainty is high"
+      },
+      {
+        "id": "C",
+        "text": "Because bank loans are always available"
+      },
+      {
+        "id": "D",
+        "text": "Because valuation never changes"
+      }
+    ],
+    "correct": "B",
+    "topic": "Finance Quiz",
+    "id": 175
+  },
+  {
+    "question": "Which of the following is one purpose of financial forecasting?",
+    "options": [
+      {
+        "id": "A",
+        "text": "Reducing the need for any financial decisions"
+      },
+      {
+        "id": "B",
+        "text": "Better planning and stronger investor communication"
+      },
+      {
+        "id": "C",
+        "text": "Eliminating all business risks"
+      },
+      {
+        "id": "D",
+        "text": "Replacing the business model"
+      }
+    ],
+    "correct": "B",
+    "topic": "Finance Quiz",
+    "id": 176
+  },
+  {
+    "question": "Which type of forecast answers the question: “When does the firm run short of cash?”",
+    "options": [
+      {
+        "id": "A",
+        "text": "Revenue forecast"
+      },
+      {
+        "id": "B",
+        "text": "Expense forecast"
+      },
+      {
+        "id": "C",
+        "text": "Cash forecast"
+      },
+      {
+        "id": "D",
+        "text": "Marketing forecast"
+      }
+    ],
+    "correct": "C",
+    "topic": "Finance Quiz",
+    "id": 177
+  },
+  {
+    "question": "Which scenario is NOT mentioned in the lecture as part of forecasting?",
+    "options": [
+      {
+        "id": "A",
+        "text": "Base case"
+      },
+      {
+        "id": "B",
+        "text": "Optimistic case"
+      },
+      {
+        "id": "C",
+        "text": "Downside case"
+      },
+      {
+        "id": "D",
+        "text": "Guaranteed case"
+      }
+    ],
+    "correct": "D",
+    "topic": "Finance Quiz",
+    "id": 178
+  },
+  {
+    "question": "Startup valuation is best described as:",
+    "options": [
+      {
+        "id": "A",
+        "text": "A precise number based only on accounting records"
+      },
+      {
+        "id": "B",
+        "text": "An estimate of what the company is worth"
+      },
+      {
+        "id": "C",
+        "text": "A guaranteed future selling price"
+      },
+      {
+        "id": "D",
+        "text": "The same as monthly revenue"
+      }
+    ],
+    "correct": "B",
+    "topic": "Finance Quiz",
+    "id": 179
+  },
+  {
+    "question": "According to the lecture, early-stage valuation often blends numbers with:",
+    "options": [
+      {
+        "id": "A",
+        "text": "Luck only"
+      },
+      {
+        "id": "B",
+        "text": "Government regulation"
+      },
+      {
+        "id": "C",
+        "text": "Judgment"
+      },
+      {
+        "id": "D",
+        "text": "Tax policy only"
+      }
+    ],
+    "correct": "C",
+    "topic": "Finance Quiz",
+    "id": 180
+  },
+  {
+    "question": "A startup has $120,000 in cash and a net monthly burn of $20,000. What is its runway?",
+    "options": [
+      {
+        "id": "A",
+        "text": "4 months"
+      },
+      {
+        "id": "B",
+        "text": "5 months"
+      },
+      {
+        "id": "C",
+        "text": "6 months"
+      },
+      {
+        "id": "D",
+        "text": "8 months"
+      }
+    ],
+    "correct": "C",
+    "topic": "Finance Quiz",
+    "id": 181
+  },
+  {
+    "question": "A startup has monthly expenses of $50,000 and monthly revenue of $20,000. What is the net burn?",
+    "options": [
+      {
+        "id": "A",
+        "text": "$20,000"
+      },
+      {
+        "id": "B",
+        "text": "$30,000"
+      },
+      {
+        "id": "C",
+        "text": "$50,000"
+      },
+      {
+        "id": "D",
+        "text": "$70,000"
+      }
+    ],
+    "correct": "B",
+    "topic": "Finance Quiz",
+    "id": 182
+  },
+  {
+    "question": "If a founder wants funding without giving up ownership, which source is most suitable according to the lecture?",
+    "options": [
+      {
+        "id": "A",
+        "text": "Angel investment"
+      },
+      {
+        "id": "B",
+        "text": "Venture capital"
+      },
+      {
+        "id": "C",
+        "text": "Debt / loans"
+      },
+      {
+        "id": "D",
+        "text": "Equity crowdfunding only"
+      }
+    ],
+    "correct": "C",
+    "topic": "Finance Quiz",
+    "id": 183
+  },
+  {
+    "question": "A startup wants not only capital but also mentoring and access to networks. Which funding source is the best fit?",
+    "options": [
+      {
+        "id": "A",
+        "text": "Bootstrapping"
+      },
+      {
+        "id": "B",
+        "text": "Angel investors"
+      },
+      {
+        "id": "C",
+        "text": "Debt financing"
+      },
+      {
+        "id": "D",
+        "text": "Cost cutting"
+      }
+    ],
+    "correct": "B",
+    "topic": "Finance Quiz",
+    "id": 184
+  },
+  {
+    "question": "A founder wants to validate market interest while raising funds online from many people. Which option is most appropriate?",
+    "options": [
+      {
+        "id": "A",
+        "text": "Crowdfunding"
+      },
+      {
+        "id": "B",
+        "text": "Debt financing"
+      },
+      {
+        "id": "C",
+        "text": "Venture capital"
+      },
+      {
+        "id": "D",
+        "text": "Internal auditing"
+      }
+    ],
+    "correct": "A",
+    "topic": "Finance Quiz",
+    "id": 185
+  },
+  {
+    "question": "Which action would most directly extend startup runway?",
+    "options": [
+      {
+        "id": "A",
+        "text": "Increasing nonessential spending"
+      },
+      {
+        "id": "B",
+        "text": "Cutting nonessential spending"
+      },
+      {
+        "id": "C",
+        "text": "Ignoring monthly cash flow"
+      },
+      {
+        "id": "D",
+        "text": "Delaying all forecasting forever"
+      }
+    ],
+    "correct": "B",
+    "topic": "Finance Quiz",
+    "id": 186
+  },
+  {
+    "question": "Which statement best reflects the lecture’s view of valuation?",
+    "options": [
+      {
+        "id": "A",
+        "text": "Valuation matters more than cash discipline"
+      },
+      {
+        "id": "B",
+        "text": "Cash discipline matters more than headline valuation"
+      },
+      {
+        "id": "C",
+        "text": "Valuation removes funding risk"
+      },
+      {
+        "id": "D",
+        "text": "Valuation is irrelevant in fundraising"
+      }
+    ],
+    "correct": "B",
+    "topic": "Finance Quiz",
+    "id": 187
+  },
+  {
+    "question": "Investors typically look for all of the following EXCEPT:",
+    "options": [
+      {
+        "id": "A",
+        "text": "A clear problem and market opportunity"
+      },
+      {
+        "id": "B",
+        "text": "Realistic forecasts and believable use of funds"
+      },
+      {
+        "id": "C",
+        "text": "A capable founding team"
+      },
+      {
+        "id": "D",
+        "text": "Guaranteed profits with no risk"
+      }
+    ],
+    "correct": "D",
+    "topic": "Finance Quiz",
+    "id": 188
+  },
+  {
+    "question": "If a startup cannot obtain capital on time, which major risk is this?",
+    "options": [
+      {
+        "id": "A",
+        "text": "Technology risk"
+      },
+      {
+        "id": "B",
+        "text": "Growth risk"
+      },
+      {
+        "id": "C",
+        "text": "Funding risk"
+      },
+      {
+        "id": "D",
+        "text": "Operational risk"
+      }
+    ],
+    "correct": "C",
+    "topic": "Finance Quiz",
+    "id": 189
+  },
+  {
+    "question": "In the mini-case, what is the main lesson of entrepreneurial finance?",
+    "options": [
+      {
+        "id": "A",
+        "text": "Numbers are mainly for accounting records"
+      },
+      {
+        "id": "B",
+        "text": "Entrepreneurial finance turns numbers into decisions about survival, growth, and timing"
+      },
+      {
+        "id": "C",
+        "text": "Startups should always avoid outside capital"
+      },
+      {
+        "id": "D",
+        "text": "Profit is the only metric that matters in early stages"
+      }
+    ],
+    "correct": "B",
+    "topic": "Finance Quiz",
+    "id": 190
   }
 ];
