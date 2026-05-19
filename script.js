@@ -1,3 +1,20 @@
+/* ===== DYNAMIC DATABASE MAPPING ===== */
+// Reconstruct LECTURE_DATA from the flat questionsData database
+const LECTURE_DATA = {};
+questionsData.forEach(q => {
+  const topicName = q.topic || 'General';
+  if (!LECTURE_DATA[topicName]) {
+    LECTURE_DATA[topicName] = [];
+  }
+  const optionStrings = q.options.map(o => o.text);
+  const correctIdx = q.options.findIndex(o => o.id === q.correct);
+  LECTURE_DATA[topicName].push({
+    text: q.question,
+    options: optionStrings,
+    correct: correctIdx >= 0 ? correctIdx : 0
+  });
+});
+
 /* ===== STATE & STORAGE ===== */
 let questions = [],
   quizOrder = [],
@@ -9,7 +26,7 @@ let questions = [],
   activeScreen = 'quizScreen';
 
 const LABELS = ['A', 'B', 'C', 'D'];
-const SESSION_KEY = 'quiz_companion_session_v3';
+const SESSION_KEY = 'quiz_companion_session_v4';
 
 function saveSession() {
   const session = {
