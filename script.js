@@ -1,12 +1,47 @@
-/* ===== STATE ===== */
+/* ===== STATE & STORAGE ===== */
 let questions = [],
   quizOrder = [],
   currentIdx = 0,
   userAnswers = [],
   showWrongOnly = false,
   listCollapsed = false,
-  selectedTopics = new Set();
+  selectedTopics = new Set(),
+  activeScreen = 'quizScreen';
+
 const LABELS = ['A', 'B', 'C', 'D'];
+const SESSION_KEY = 'quiz_companion_session_v2';
+
+function saveSession() {
+  const session = {
+    selectedTopics: Array.from(selectedTopics),
+    questions: questions,
+    quizOrder: quizOrder,
+    currentIdx: currentIdx,
+    userAnswers: userAnswers,
+    activeScreen: activeScreen,
+    showWrongOnly: showWrongOnly
+  };
+  localStorage.setItem(SESSION_KEY, JSON.stringify(session));
+}
+
+function loadSession() {
+  const raw = localStorage.getItem(SESSION_KEY);
+  if (!raw) return false;
+  try {
+    const session = JSON.parse(raw);
+    selectedTopics = new Set(session.selectedTopics || []);
+    questions = session.questions || [];
+    quizOrder = session.quizOrder || [];
+    currentIdx = session.currentIdx || 0;
+    userAnswers = session.userAnswers || [];
+    activeScreen = session.activeScreen || 'quizScreen';
+    showWrongOnly = session.showWrongOnly || false;
+    return questions.length > 0;
+  } catch (e) {
+    console.error("Error loading session:", e);
+    return false;
+  }
+}
 
 /* ===== TOPIC SELECTOR ===== */
 function initTopicSelector() {
@@ -60,6 +95,7 @@ function toggleTopic(topic) {
     }));
     questions.push(...qList);
   }
+  saveSession();
   updateTopicUI();
   renderSetup();
 }
@@ -90,6 +126,7 @@ function selectAllTopics() {
       questions.push(...qList);
     }
   });
+  saveSession();
   updateTopicUI();
   renderSetup();
 }
@@ -97,6 +134,7 @@ function selectAllTopics() {
 function clearSelectedTopics() {
   selectedTopics.clear();
   questions = questions.filter(q => !q.topic);
+  saveSession();
   updateTopicUI();
   renderSetup();
 }
@@ -131,7 +169,10 @@ function renderSetup() {
 }
 
 function validateStart() {
-  document.getElementById('startBtn').disabled = questions.length === 0;
+  const startBtn = document.getElementById('startBtn');
+  if (startBtn) {
+    startBtn.disabled = questions.length === 0;
+  }
 }
 
 function toggleCollapse() {
@@ -145,6 +186,8 @@ function startQuiz() {
   quizOrder = shuffle([...questions.keys()]);
   currentIdx = 0;
   userAnswers = new Array(questions.length).fill(null);
+  activeScreen = 'quizScreen';
+  saveSession();
   showScreen('quizScreen');
   renderQuestion();
 }
@@ -153,20 +196,62 @@ function renderQuestion() {
   const qi = quizOrder[currentIdx],
     q = questions[qi],
     tot = questions.length;
+  
   document.getElementById('progressBar').style.width = (currentIdx / tot * 100) + '%';
   document.getElementById('qCounter').textContent = `Question ${currentIdx+1} of ${tot}`;
   document.getElementById('qText').textContent = q.text;
+  
   const list = document.getElementById('optionsList');
   list.innerHTML = '';
+  
+  const chosen = userAnswers[qi];
+  const correct = q.correct;
+  
   q.options.forEach((opt, oi) => {
     const btn = document.createElement('button');
     btn.className = 'opt-btn';
-    btn.innerHTML = `<span class="opt-icon">${LABELS[oi]}</span>${escHtml(opt)}`;
     btn.onclick = () => selectAnswer(oi);
+    
+    const iconSpan = document.createElement('span');
+    iconSpan.className = 'opt-icon';
+    iconSpan.textContent = LABELS[oi];
+    btn.appendChild(iconSpan);
+    
+    const textSpan = document.createElement('span');
+    textSpan.textContent = opt;
+    btn.appendChild(textSpan);
+    
+    if (chosen !== null) {
+      btn.disabled = true;
+      if (oi === correct) {
+        btn.classList.add('correct');
+        iconSpan.textContent = '✓';
+      }
+      if (oi === chosen && chosen !== correct) {
+        btn.classList.add('wrong');
+        iconSpan.textContent = '✕';
+      }
+      if (oi === correct && chosen !== correct) {
+        btn.classList.add('reveal-correct');
+        iconSpan.textContent = '✓';
+      }
+    }
+    
     list.appendChild(btn);
   });
-  document.getElementById('nextBtn').style.display = 'none';
-  document.getElementById('finishBtn').style.display = 'none';
+  
+  const prevBtn = document.getElementById('prevBtn');
+  if (prevBtn) {
+    prevBtn.disabled = currentIdx === 0;
+  }
+  
+  const isLast = currentIdx === tot - 1;
+  const isAnswered = chosen !== null;
+  
+  document.getElementById('nextBtn').style.display = (isAnswered && !isLast) ? 'inline-flex' : 'none';
+  document.getElementById('finishBtn').style.display = (isAnswered && isLast) ? 'inline-flex' : 'none';
+  
+  renderNavRibbon();
 }
 
 function selectAnswer(chosen) {
@@ -174,22 +259,92 @@ function selectAnswer(chosen) {
     q = questions[qi],
     correct = q.correct;
   userAnswers[qi] = chosen;
+  
+  saveSession();
+
   const btns = document.querySelectorAll('.opt-btn');
-  btns.forEach(b => b.disabled = true);
-  btns[chosen].classList.add(chosen === correct ? 'correct' : 'wrong');
-  btns[chosen].querySelector('.opt-icon').textContent = chosen === correct ? 'âœ“' : 'âœ—';
-  if (chosen !== correct) {
-    btns[correct].classList.add('reveal-correct');
-    btns[correct].querySelector('.opt-icon').textContent = 'âœ“';
-  }
+  btns.forEach((btn, idx) => {
+    btn.disabled = true;
+    if (idx === correct) {
+      btn.classList.add('correct');
+      btn.querySelector('.opt-icon').textContent = '✓';
+    }
+    if (idx === chosen && chosen !== correct) {
+      btn.classList.add('wrong');
+      btn.querySelector('.opt-icon').textContent = '✕';
+    }
+    if (idx === correct && chosen !== correct) {
+      btn.classList.add('reveal-correct');
+      btn.querySelector('.opt-icon').textContent = '✓';
+    }
+  });
+  
   const isLast = currentIdx === questions.length - 1;
   document.getElementById('nextBtn').style.display = isLast ? 'none' : 'inline-flex';
   document.getElementById('finishBtn').style.display = isLast ? 'inline-flex' : 'none';
+  
+  renderNavRibbon();
 }
 
 function nextQuestion() {
-  currentIdx++;
+  if (currentIdx < questions.length - 1) {
+    currentIdx++;
+    saveSession();
+    renderQuestion();
+  }
+}
+
+function prevQuestion() {
+  if (currentIdx > 0) {
+    currentIdx--;
+    saveSession();
+    renderQuestion();
+  }
+}
+
+function jumpToQuestion(idx) {
+  currentIdx = idx;
+  saveSession();
   renderQuestion();
+}
+
+function renderNavRibbon() {
+  const ribbon = document.getElementById('qNavRibbon');
+  if (!ribbon) return;
+  ribbon.innerHTML = '';
+  
+  quizOrder.forEach((qi, idx) => {
+    const bubble = document.createElement('button');
+    bubble.className = 'q-bubble';
+    
+    const chosen = userAnswers[qi];
+    const correct = questions[qi].correct;
+    
+    if (idx === currentIdx) {
+      bubble.classList.add('active');
+    }
+    
+    if (chosen !== null) {
+      if (chosen === correct) {
+        bubble.classList.add('correct');
+      } else {
+        bubble.classList.add('wrong');
+      }
+    }
+    
+    bubble.textContent = idx + 1;
+    bubble.onclick = () => jumpToQuestion(idx);
+    ribbon.appendChild(bubble);
+  });
+  
+  const activeBubble = ribbon.querySelector('.q-bubble.active');
+  if (activeBubble) {
+    activeBubble.scrollIntoView({
+      behavior: 'smooth',
+      block: 'nearest',
+      inline: 'center'
+    });
+  }
 }
 
 /* ===== RESULTS ===== */
@@ -197,19 +352,29 @@ function showResults() {
   const correct = userAnswers.filter((a, i) => a === questions[i].correct).length,
     total = questions.length,
     pct = Math.round(correct / total * 100);
+    
   setTimeout(() => {
-    document.getElementById('scoreArc').style.strokeDashoffset = 2 * Math.PI * 62 * (1 - pct / 100);
+    const scoreArc = document.getElementById('scoreArc');
+    if (scoreArc) {
+      scoreArc.style.strokeDashoffset = 2 * Math.PI * 62 * (1 - pct / 100);
+    }
   }, 100);
+  
   document.getElementById('scoreNum').textContent = `${correct}/${total}`;
-  document.getElementById('resultTitle').textContent = pct === 100 ? 'ðŸ† Perfect Score!' : pct >= 70 ? 'ðŸŽ‰ Great Job!' : pct >= 40 ? 'ðŸ“š Keep Practicing' : 'ðŸ’ª Try Again!';
+  document.getElementById('resultTitle').textContent = pct === 100 ? '🏆 Perfect Score!' : pct >= 70 ? '🎉 Great Job!' : pct >= 40 ? '📚 Keep Practicing' : '💪 Try Again!';
   document.getElementById('resultSub').textContent = `You answered ${correct} out of ${total} correctly (${pct}%)`;
   document.getElementById('progressBar').style.width = '100%';
+  
+  activeScreen = 'resultsScreen';
+  saveSession();
+  
   showScreen('resultsScreen');
   renderReview();
 }
 
 function renderReview() {
   const list = document.getElementById('reviewList');
+  if (!list) return;
   list.innerHTML = '';
   questions.forEach((q, qi) => {
     const chosen = userAnswers[qi],
@@ -217,28 +382,36 @@ function renderReview() {
     if (showWrongOnly && isRight) return;
     const div = document.createElement('div');
     div.className = `review-item ${isRight?'all-correct':'had-wrong'}`;
-    div.innerHTML = `<div class="review-q"><span class="review-badge ${isRight?'badge-correct':'badge-wrong'}">${isRight?'âœ“ Correct':'âœ— Wrong'}</span>${escHtml(q.text)}</div><div class="review-answers">${q.options.map((opt,oi)=>{ let cls='r-neutral',icon='â—‹'; if(oi===q.correct){cls='r-correct';icon='âœ“';} if(oi===chosen&&oi!==q.correct){cls='r-wrong';icon='âœ—';} return ` < div class = "review-opt ${cls}" > < span class = "r-icon" > $ {
-      icon
-    } < /span>${LABELS[oi]}. ${escHtml(opt)}</div > `; }).join('')}</div>`;
+    div.innerHTML = `<div class="review-q"><span class="review-badge ${isRight?'badge-correct':'badge-wrong'}">${isRight?'✓ Correct':'✗ Wrong'}</span>${escHtml(q.text)}</div><div class="review-answers">${q.options.map((opt,oi)=>{ let cls='r-neutral',icon='○'; if(oi===q.correct){cls='r-correct';icon='✓';} if(oi===chosen&&oi!==q.correct){cls='r-wrong';icon='✗';} return `<div class="review-opt ${cls}"><span class="r-icon">${icon}</span>${LABELS[oi]}. ${escHtml(opt)}</div>`; }).join('')}</div>`;
     list.appendChild(div);
   });
-  if (!list.innerHTML) list.innerHTML = '<div style="color:var(--correct);text-align:center;padding:2rem;font-family:\'Syne\',sans-serif;font-weight:700;">âœ“ All answers correct!</div>';
+  if (!list.innerHTML) list.innerHTML = '<div style="color:var(--correct);text-align:center;padding:2rem;font-family:\'Syne\',sans-serif;font-weight:700;">✓ All answers correct!</div>';
 }
 
 function toggleWrongOnly() {
   showWrongOnly = !showWrongOnly;
-  document.getElementById('wrongToggle').classList.toggle('on', showWrongOnly);
+  const toggleEl = document.getElementById('wrongToggle');
+  if (toggleEl) {
+    toggleEl.classList.toggle('on', showWrongOnly);
+  }
+  saveSession();
   renderReview();
 }
 
 function showScreen(id) {
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-  document.getElementById(id).classList.add('active');
+  const target = document.getElementById(id);
+  if (target) {
+    target.classList.add('active');
+  }
 }
 
 function backToSetup() {
+  activeScreen = 'setupScreen';
+  saveSession();
   showScreen('setupScreen');
   renderSetup();
+  initTopicSelector();
 }
 
 function restartQuiz() {
@@ -257,7 +430,20 @@ function shuffle(arr) {
   return arr;
 }
 
-// Initialize Topic Selector, preload ALL lectures, and start solving immediately
+// ===== APP INITIALIZATION =====
 initTopicSelector();
-selectAllTopics();
-startQuiz();
+if (loadSession()) {
+  updateTopicUI();
+  if (activeScreen === 'quizScreen') {
+    showScreen('quizScreen');
+    renderQuestion();
+  } else if (activeScreen === 'resultsScreen') {
+    showResults();
+  } else {
+    showScreen('setupScreen');
+    renderSetup();
+  }
+} else {
+  selectAllTopics();
+  startQuiz();
+}
